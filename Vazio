@@ -1,0 +1,18 @@
+package lab;
+
+public class Vazio extends Elemento{
+	public static final String CARACTER  = ".";
+	
+	public Vazio() {
+		
+	}
+	
+	public Vazio(Posicao posicao) {
+		super(posicao);
+	}
+	
+	@Override
+	public String getValue() {
+		return CARACTER;
+	}
+}
