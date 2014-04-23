@@ -1,0 +1,14 @@
+package lab;
+
+public class Inicial extends Elemento {
+	
+	public Inicial(Posicao posicao) {
+		super(posicao);
+	}
+	
+	
+	@Override
+	public String getValue() {
+		return "#";
+	}
+}
