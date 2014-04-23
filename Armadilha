@@ -1,0 +1,18 @@
+package lab;
+
+public class Armadilha extends Elemento {
+	public static final String CARACTER  = "T";
+	
+	public Armadilha(Posicao posicao) {
+		super(posicao);
+	}
+	
+	public Armadilha() {
+		
+	}
+
+	@Override
+	public String getValue() {
+		return CARACTER;
+	}
+}
