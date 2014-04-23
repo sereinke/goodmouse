@@ -1,0 +1,162 @@
+package lab;
+
+public class Rato extends Elemento {
+	public Labirinto getLab() {
+		return lab;
+	}
+
+	public void setLab(Labirinto lab) {
+		this.lab = lab;
+	}
+
+	public static final String CARACTER = "M";
+	private Labirinto lab;
+	private boolean achouSaida;
+
+	public Rato(Posicao posicao) {
+		super(posicao);
+		this.achouSaida = false;
+	}
+
+	public Rato() {
+
+	}
+
+	@Override
+	public String getValue() {
+		return CARACTER;
+	}
+
+	public boolean achouSaida() {
+		return this.achouSaida;
+	}
+
+	public void andar() throws Exception {
+
+		// System.out.println("1");
+
+		System.out.println(this.lab.toString());
+
+		int colunaAnt = lab.getColunaAnterior();
+		int linhaAnt = lab.getLinhaAnterior();
+		int colunaAtual = lab.getRatoColuna();
+		int linhaAtual = lab.getRatoLinha();
+
+		boolean desceu = ((linhaAtual > linhaAnt) || linhaAnt == -1);
+		boolean subui = (linhaAtual < linhaAnt);
+		boolean direita = (colunaAtual > colunaAnt);
+		boolean esquerda = (colunaAtual < colunaAnt);
+
+		boolean caminhou = true;
+
+		if (lab.getPosicao(linhaAtual, colunaAtual).getCaracter()
+				.equalsIgnoreCase("E")) {
+			caminhou = false;
+			System.out.println("ACHOU SAIDA");
+		} else if (desceu) {
+
+			System.out.println("desceu");
+
+			if (podeIrDireita(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual + 1);
+			} else if (podeIrEsquerda(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual - 1);
+			} else if (podeIrAbaixo(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual + 1);
+			} else if (podeIrAcima(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual - 1);
+			} else {
+				caminhou = false;
+				System.out.println("GAME OVER :(");
+			}
+		} else if (subui) {
+			System.out.println("subiu");
+
+			System.out.println("");
+			// direita, esquerda, cima baixo
+
+			if (podeIrDireita(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual + 1);
+			} else if (podeIrEsquerda(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual - 1);
+			} else if (podeIrAcima(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual - 1);
+			} else if (podeIrAbaixo(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual + 1);
+			} else {
+				caminhou = false;
+				System.out.println("GAME OVER :(");
+			}
+
+		} else if (direita) {
+			System.out.println("direita");
+
+			// cima, baixo, direita esquerda
+			if (podeIrAcima(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual - 1);
+			} else if (podeIrAbaixo(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual + 1);
+			} else if (podeIrDireita(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual + 1);
+			} else if (podeIrEsquerda(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual - 1);
+			} else {
+				caminhou = false;
+				System.out.println("GAME OVER :(");
+			}
+		} else if (esquerda) {
+			System.out.println("esquerda");
+
+			// cima, baixo, esquerda, direita
+			if (podeIrAcima(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual - 1);
+			} else if (podeIrAbaixo(linhaAtual, colunaAtual)) {
+				lab.setRatoLinha(linhaAtual + 1);
+			} else if (podeIrEsquerda(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual - 1);
+			} else if (podeIrDireita(linhaAtual, colunaAtual)) {
+				lab.setRatoColuna(colunaAtual + 1);
+			} else {
+				caminhou = false;
+				System.out.println("GAME OVER :(");
+			}
+		} else {
+			throw new Exception("ERRO");
+		}
+		lab.setLinhaAnterior(linhaAtual);
+		lab.setColunaAnterior(colunaAtual);
+
+		if (caminhou) {
+			andar();
+		}
+
+	}
+
+	private boolean podeIrDireita(int linhaAtual, int colunaAtual) {
+		if (lab.getPosicao(linhaAtual, colunaAtual + 1).caminhavel()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean podeIrEsquerda(int linhaAtual, int colunaAtual) {
+		if (lab.getPosicao(linhaAtual, colunaAtual - 1).caminhavel()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean podeIrAbaixo(int linhaAtual, int colunaAtual) {
+		if (lab.getPosicao(linhaAtual + 1, colunaAtual).caminhavel()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean podeIrAcima(int linhaAtual, int colunaAtual) {
+		if (lab.getPosicao(linhaAtual - 1, colunaAtual).caminhavel()) {
+			return true;
+		}
+		return false;
+	}
+}
